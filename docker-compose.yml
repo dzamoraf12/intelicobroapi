@@ -1,0 +1,52 @@
+version: "3.9"
+
+networks:
+  default:
+    name: sm_net
+
+services:
+  db: 
+    image: mysql:8
+    command: --max_allowed_packet=32505856 --wait-timeout=28800 --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: intelicobroapi
+      MYSQL_DATABASE: intelicobroapi_development
+      MYSQL_USER: intelicobroapi
+      MYSQL_PASSWORD: intelicobroapi
+    ports:
+      - "3308:3306"
+    mem_limit: 1g
+    mem_reservation: 500M
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 5
+    volumes:
+      - icapi-db-volume:/var/lib/mysql
+  back:
+    image: intelicobroapi
+    build: .
+    stdin_open: true
+    tty: true
+    entrypoint: ["/app/lib/docker-entrypoint.sh"]
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ".:/app"
+      - "icapi-tmp:/tmp"
+    ports:
+      - "3000:3000"
+    mem_limit: 2g
+    mem_reservation: 128M
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_USER: intelicobroapi
+      DB_NAME: intelicobroapi
+      DB_PASSWORD: intelicobroapi
+      DB_HOST: db
+
+volumes:
+  icapi-db-volume:
+  icapi-tmp:
