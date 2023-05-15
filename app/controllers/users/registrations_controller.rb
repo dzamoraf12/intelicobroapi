@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def register_success
     notification_content = generate_notification("Registrado exitosamente.",
-                                                 "Ahora ya puedes disfrutar de los mejores restaurantes.",
+                                                 "Ahora ya puedes disfrutar.",
                                                  "fa fa-bell", "", "")
     render standard_json_response(current_user, notification_content, :ok, [], "")
   end
