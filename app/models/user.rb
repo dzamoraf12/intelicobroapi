@@ -6,6 +6,7 @@ class User < ApplicationRecord
          jwt_revocation_strategy: JwtDenylist
 
   has_one_attached :avatar
+  belongs_to :agent, class_name: "Agent", foreign_key: "agent_id"
 
   validates :name, :lastname, presence: true, on: %i[update], unless: :reset_password_in_process?
 

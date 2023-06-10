@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_26_213549) do
+ActiveRecord::Schema.define(version: 2023_06_10_184013) do
 
   create_table "abonos_promesas", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "NoPago", limit: 45
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.integer "IDSolicitud", unsigned: true
   end
 
-  create_table "abonospagare", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb3", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
+  create_table "abonospagare", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "IDPagare", default: 0
     t.decimal "Importe", precision: 14, scale: 2, default: "0.0"
     t.datetime "Fecha", default: "1900-01-01 00:00:00"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.index ["Cancelado"], name: "Ix_cancelado"
   end
 
-  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "latin1", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "latin1", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "latin1", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.integer "Id_actividad_vulnerable"
   end
 
-  create_table "antilavado_parametros", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb3", force: :cascade do |t|
+  create_table "antilavado_parametros", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", force: :cascade do |t|
     t.string "RFC", limit: 15
     t.string "Nombre", limit: 80
     t.integer "IdActividadVulnerable", default: 0, unsigned: true
@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.integer "Corte", default: 0, unsigned: true
     t.integer "TipoMovimiento", default: 0
     t.integer "IDPagare", default: 0
-    t.integer "Parcial", limit: 1, default: 0, unsigned: true
+    t.boolean "Parcial", default: false, unsigned: true
     t.string "FormaPago", limit: 45
     t.index ["Fecha"], name: "Fecha"
   end
@@ -593,7 +593,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.integer "IDRelacion", default: 0, unsigned: true
   end
 
-  create_table "factura_parametros", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb3", force: :cascade do |t|
+  create_table "factura_parametros", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", force: :cascade do |t|
     t.text "RutaClavePrivada"
     t.text "RutaCertificacion"
     t.string "Clave", limit: 60
@@ -624,13 +624,13 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.index ["TipoFolio"], name: "TipoFolio"
   end
 
-  create_table "fotos", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb3", force: :cascade do |t|
+  create_table "fotos", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", force: :cascade do |t|
     t.string "Nombre", limit: 45
     t.binary "Foto", size: :medium
     t.integer "IDCliente", default: 0, unsigned: true
   end
 
-  create_table "fotos_clientes", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb3", force: :cascade do |t|
+  create_table "fotos_clientes", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", force: :cascade do |t|
     t.string "Nombre", limit: 45
     t.binary "Foto", size: :medium
     t.integer "IDCliente", default: 0, unsigned: true
@@ -738,7 +738,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.index ["IDInformacionEconomica"], name: "fk_IngresosMensuales_Informacion Economica"
   end
 
-  create_table "jwt_denylist", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "jwt_denylist", charset: "utf8mb4", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", precision: 6, null: false
     t.datetime "created_at", precision: 6, null: false
@@ -809,7 +809,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.string "MotivoCancelacion"
     t.integer "IDUsuarioCancelado", default: 0
     t.string "PC", limit: 20
-    t.integer "Parcial", limit: 1, default: 0, unsigned: true
+    t.boolean "Parcial", default: false, unsigned: true
     t.datetime "FechaAplicado", default: "1900-01-01 00:00:00"
     t.text "Observaciones"
     t.index ["IDCliente"], name: "fk_Movimientos_Clientes"
@@ -886,7 +886,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.decimal "AmortizacionParcial", precision: 14, scale: 4, default: "0.0"
     t.decimal "AmortizacionIntParcial", precision: 14, scale: 4, default: "0.0"
     t.datetime "FechaParcial"
-    t.integer "Parcial", limit: 1, default: 0, unsigned: true
+    t.boolean "Parcial", default: false, unsigned: true
     t.decimal "PagoIntMoratorios", precision: 14, scale: 4, default: "0.0"
     t.decimal "PagoIvaMoratorios", precision: 14, scale: 4, default: "0.0"
     t.datetime "FechaPagoMoroso"
@@ -941,7 +941,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.string "Descripcion", limit: 105, null: false
   end
 
-  create_table "referencias", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb3", force: :cascade do |t|
+  create_table "referencias", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", force: :cascade do |t|
     t.string "Paterno", limit: 60
     t.string "Materno", limit: 60
     t.string "Nombre", limit: 60
@@ -1040,7 +1040,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.string "Folio", limit: 20
     t.string "Autorizacion", limit: 20
     t.decimal "Importe", precision: 14, scale: 4
-    t.integer "Parcial", limit: 1, default: 0, unsigned: true
+    t.boolean "Parcial", default: false, unsigned: true
     t.string "FormaPago", limit: 45
     t.index ["IDPagare"], name: "fk_TipoPago_Pagares"
   end
@@ -1071,7 +1071,7 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.decimal "Mes", precision: 12, scale: 2, default: "0.0"
   end
 
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", charset: "latin1", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "name", limit: 100
     t.string "lastname", limit: 100
@@ -1082,6 +1082,8 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.datetime "remember_created_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "agent_id"
+    t.index ["agent_id"], name: "index_users_on_agent_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
