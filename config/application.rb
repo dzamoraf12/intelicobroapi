@@ -32,7 +32,7 @@ module DeviseVue
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.i18n.available_locales = [:es]
+    config.i18n.available_locales = [:es, :en]
     config.i18n.default_locale = :es
   end
 end

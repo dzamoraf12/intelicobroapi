@@ -105,6 +105,13 @@ GEM
     dry-core (0.7.1)
       concurrent-ruby (~> 1.0)
     erubi (1.10.0)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
+    faker (3.2.0)
+      i18n (>= 1.8.11, < 2)
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -218,6 +225,8 @@ GEM
     rspec-support (3.12.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
+    shoulda-matchers (5.3.0)
+      activesupport (>= 5.2.0)
     strscan (3.0.1)
     thor (1.2.1)
     timeout (0.2.0)
@@ -248,6 +257,8 @@ DEPENDENCIES
   devise (~> 4.8)
   devise-jwt (~> 0.9.0)
   dotenv-rails
+  factory_bot_rails
+  faker
   image_processing (~> 1.2)
   letter_opener
   mail_interceptor
@@ -257,6 +268,7 @@ DEPENDENCIES
   rack-cors (~> 1.1)
   rails (~> 7.0.1)
   rspec-rails (~> 6.0.0)
+  shoulda-matchers
   tzinfo-data
 
 RUBY VERSION
