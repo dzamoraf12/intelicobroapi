@@ -42,7 +42,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DB_USER: intelicobroapi
+      DB_USER: root
       DB_NAME: intelicobroapi
       DB_PASSWORD: intelicobroapi
       DB_HOST: db
