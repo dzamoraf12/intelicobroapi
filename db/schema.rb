@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_26_213549) do
+ActiveRecord::Schema.define(version: 2023_06_10_184013) do
 
   create_table "abonos_promesas", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "NoPago", limit: 45
@@ -1082,6 +1082,8 @@ ActiveRecord::Schema.define(version: 2023_01_26_213549) do
     t.datetime "remember_created_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "agent_id"
+    t.index ["agent_id"], name: "index_users_on_agent_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
