@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_10_184013) do
+ActiveRecord::Schema.define(version: 2023_06_10_221202) do
 
   create_table "abonos_promesas", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "NoPago", limit: 45
@@ -340,6 +340,10 @@ ActiveRecord::Schema.define(version: 2023_06_10_184013) do
     t.string "Profesion", limit: 105
     t.integer "IDUsuarioBaja", unsigned: true
     t.string "MotivoBaja", limit: 155
+    t.integer "verification_status", default: 0
+    t.text "verification_comments"
+    t.datetime "verified_at", precision: 6
+    t.datetime "verification_accepted_at", precision: 6
     t.index ["IDEstadoCivil"], name: "fk_Clientes_EstadoCivil"
     t.index ["NumeroCliente"], name: "NumeroCliente"
     t.index ["NumeroCuenta"], name: "NumeroCuenta"
