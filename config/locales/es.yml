@@ -43,6 +43,25 @@ es:
         request_message: "Mensaje de solicitud"
         customer: "Cliente"
         tax_certificate: "Cédula de situación fiscal"
+      prospect:
+        names: "Nombres"
+        father_surname: "Apellido paterno"
+        mother_surname: "Apellido materno"
+        agent_id: "Agente"
+        city: "Ciudad"
+        external_number: "Número externo"
+        internal_number: "Número interno"
+        latitude: "Latitud"
+        longitude: "Longitud"
+        municipality: "Municipio"
+        neighborhood: "Colonia"
+        state: "Estado"
+        street: "Calle"
+        verification_accepted_at: "Fecha de aceptado"
+        verification_rejected_at: "Fecha de rechazo"
+        verification_status: "Estatus de verificación"
+        verified_at: "Fecha de verificado"
+        zip_code: "Código postal"
     models:
       user: "Usuario"
       mercado_pago_presenter: "Mercado Pago"
@@ -52,6 +71,7 @@ es:
         one: "Solicitud de mayorista"
       customer:
         one: "Cliente"
+      prospect: "Prospecto"
     errors:
       messages:
         record_invalid: "La validación falló: %{errors}"

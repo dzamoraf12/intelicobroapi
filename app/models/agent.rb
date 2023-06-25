@@ -10,4 +10,5 @@ class Agent < ApplicationRecord
   alias_attribute :type, :Tipo
 
   has_one :user
+  has_many :prospects
 end
