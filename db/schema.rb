@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_10_221202) do
+ActiveRecord::Schema.define(version: 2023_06_25_004827) do
 
   create_table "abonos_promesas", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "NoPago", limit: 45
@@ -340,10 +340,6 @@ ActiveRecord::Schema.define(version: 2023_06_10_221202) do
     t.string "Profesion", limit: 105
     t.integer "IDUsuarioBaja", unsigned: true
     t.string "MotivoBaja", limit: 155
-    t.integer "verification_status", default: 0
-    t.text "verification_comments"
-    t.datetime "verified_at", precision: 6
-    t.datetime "verification_accepted_at", precision: 6
     t.index ["IDEstadoCivil"], name: "fk_Clientes_EstadoCivil"
     t.index ["NumeroCliente"], name: "NumeroCliente"
     t.index ["NumeroCuenta"], name: "NumeroCuenta"
@@ -943,6 +939,31 @@ ActiveRecord::Schema.define(version: 2023_06_10_221202) do
 
   create_table "profesiones", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "Descripcion", limit: 105, null: false
+  end
+
+  create_table "prospects", charset: "latin1", force: :cascade do |t|
+    t.string "names"
+    t.string "mother_surname"
+    t.string "father_surname"
+    t.string "street"
+    t.string "internal_number"
+    t.string "external_number"
+    t.integer "zip_code"
+    t.string "neighborhood"
+    t.string "municipality"
+    t.string "city"
+    t.string "state"
+    t.string "latitude"
+    t.string "longitude"
+    t.integer "verification_status", default: 0
+    t.datetime "verified_at", precision: 6
+    t.datetime "verification_accepted_at", precision: 6
+    t.datetime "verification_rejected_at", precision: 6
+    t.datetime "deleted_at", precision: 6
+    t.integer "agent_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deleted_at"], name: "index_prospects_on_deleted_at"
   end
 
   create_table "referencias", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", force: :cascade do |t|

@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   post "/members/update_avatar", to: "members#update_avatar"
   get "/members/reset_password", to: "member_views#reset_password"
 
+  resources :customers, only: [:index, :show]
+  resources :prospects
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

@@ -66,3 +66,9 @@ gem "mail_interceptor", group: [:development, :staging]
 # Pagination api
 gem 'pagy', '~> 6.0'
 gem 'api-pagination'
+
+# To enable ActiveRecord enums validation
+gem 'enum_attributes_validation'
+
+# To use soft delete
+gem 'acts_as_paranoid'

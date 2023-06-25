@@ -66,6 +66,9 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    acts_as_paranoid (0.8.1)
+      activerecord (>= 5.2, < 7.1)
+      activesupport (>= 5.2, < 7.1)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     api-pagination (5.0.0)
@@ -104,6 +107,9 @@ GEM
       dry-configurable (~> 0.13, >= 0.13.0)
     dry-core (0.7.1)
       concurrent-ruby (~> 1.0)
+    enum_attributes_validation (0.1.7)
+      activerecord
+      activesupport
     erubi (1.10.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -250,6 +256,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts_as_paranoid
   api-pagination
   blueprinter
   bootsnap
@@ -257,6 +264,7 @@ DEPENDENCIES
   devise (~> 4.8)
   devise-jwt (~> 0.9.0)
   dotenv-rails
+  enum_attributes_validation
   factory_bot_rails
   faker
   image_processing (~> 1.2)
