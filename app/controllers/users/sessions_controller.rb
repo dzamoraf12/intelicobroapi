@@ -6,7 +6,8 @@ class Users::SessionsController < Devise::SessionsController
     avatar_url = current_user.avatar_url unless current_user.nil?
     status = current_user.nil? ? :unauthorized : :ok
     notification_content = generate_notification("Iniciaste sesión.",
-                                                 "Ahora ya puedes disfrutar.",
+                                                 ["Ahora ya puedes disfrutar."],
+                                                 [],
                                                  "fa fa-bell", "", "")
     render standard_json_response({ user: current_user, avatar: avatar_url },
                                   notification_content, status, [], "")
