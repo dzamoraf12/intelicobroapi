@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
-  rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
+  rescue_from ActiveRecord::RecordInvalid, with: :record_invalid_error
   rescue_from NotImplementedError, with: :not_implemented
   rescue_from Pagy::OverflowError, with: :record_error
   rescue_from ArgumentError, with: :record_invalid
@@ -151,7 +151,7 @@ class ApplicationController < ActionController::API
 
   def record_invalid_error(e)
     notification_content = generate_notification("Hay errores que impiden realizar el registro",
-                                                 e.record.errors.full_messages, "fa fa-bell", "", "")
+                                                 e.record.errors, "fa fa-bell", "", "")
     render standard_json_response({}, notification_content, :unprocessable_entity, [], "")
   end
 
