@@ -151,14 +151,16 @@ class ApplicationController < ActionController::API
 
   def record_invalid_error(e)
     notification_content = generate_notification("Hay errores que impiden realizar el registro",
-                                                 e.record.errors, "fa fa-bell", "", "")
+                                                 e.record.errors, e.record.errors.full_messages,
+                                                 "fa fa-bell", "", "")
     render standard_json_response({}, notification_content, :unprocessable_entity, [], "")
   end
 
-  def generate_notification(title, message, icon, url, target)
+  def generate_notification(title, messages, icon, url, target)
     {
       title: title,
-      message: message,
+      messages: messages,
+      full_messages: full_messages,
       icon: icon,
       url: url,
       target: target
