@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid_error
   rescue_from NotImplementedError, with: :not_implemented
   rescue_from Pagy::OverflowError, with: :record_error
-  rescue_from ArgumentError, with: :record_invalid
+  rescue_from ArgumentError, with: :render_exception_error
 
   private
 
@@ -58,7 +58,7 @@ class ApplicationController < ActionController::API
     :json => {
       :success => false,
       :titulo => "¡Oops! error inesperado.",
-      :mensaje => "Ocurrió un error al registrar el servicio.",
+      :mensaje => "Ocurrió un error al registrar el servicio. \n#{error&.message}",
       :tipo => "error"
     }
   end
