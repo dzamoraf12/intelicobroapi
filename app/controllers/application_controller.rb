@@ -156,7 +156,7 @@ class ApplicationController < ActionController::API
     render standard_json_response({}, notification_content, :unprocessable_entity, [], "")
   end
 
-  def generate_notification(title, messages, icon, url, target)
+  def generate_notification(title, messages, full_messages, icon, url, target)
     {
       title: title,
       messages: messages,
