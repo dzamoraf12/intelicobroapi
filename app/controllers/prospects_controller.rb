@@ -1,5 +1,5 @@
 class ProspectsController < ApplicationController
-  before_action :set_prospect, only: %i[ show update destroy ]
+  before_action :set_prospect, only: %i[ show update destroy upload_document ]
 
   def index
     render standard_json_response(serializer(filter_list), {}, :ok, [], "")
@@ -15,6 +15,7 @@ class ProspectsController < ApplicationController
   end
 
   def update
+    set_attaching_type
     @prospect.update!(prospect_params)
     render standard_json_response(serializer(@prospect), {}, :ok, [], "")
   end
@@ -34,7 +35,8 @@ class ProspectsController < ApplicationController
                                        :internal_number, :external_number, :zip_code, :neighborhood,
                                        :municipality, :city, :state, :verification_status,
                                        :verified_at, :verification_accepted_at, :latitude, :longitude,
-                                       :verification_rejected_at, :agent_id)
+                                       :verification_rejected_at, :agent_id, :picture, :ID_front,
+                                       :ID_back, :address_proof)
     end
 
     def filter_list
@@ -48,5 +50,13 @@ class ProspectsController < ApplicationController
   
     def serializer(resources, view: nil)
       ProspectSerializer.render_as_hash(resources, view: view)
+    end
+
+    def set_attaching_type
+      @prospect.attaching_documents = []
+      @prospect.attaching_documents << "picture" if prospect_params.key? :picture
+      @prospect.attaching_documents << "ID_front" if prospect_params.key? :ID_front
+      @prospect.attaching_documents << "ID_back" if prospect_params.key? :ID_back
+      @prospect.attaching_documents << "address_proof" if prospect_params.key? :address_proof
     end
 end

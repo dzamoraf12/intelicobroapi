@@ -79,6 +79,42 @@ RSpec.describe "/prospects", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
+
+      it "attaches the uploaded picture" do
+        file = fixture_file_upload(Rails.root.join("spec", "support", "fixtures", "logo-web.png"), "image/png")
+        prospect = Prospect.create! valid_attributes
+        expect {
+          patch prospect_url(prospect),
+                params: { prospect: { picture: file } }, headers: valid_headers
+        }.to change(ActiveStorage::Attachment, :count).by(1)
+      end
+
+      it "attaches the uploaded ID front" do
+        file = fixture_file_upload(Rails.root.join("spec", "support", "fixtures", "logo-web.png"), "image/png")
+        prospect = Prospect.create! valid_attributes
+        expect {
+          patch prospect_url(prospect),
+                params: { prospect: { ID_front: file } }, headers: valid_headers
+        }.to change(ActiveStorage::Attachment, :count).by(1)
+      end
+
+      it "attaches the uploaded ID back" do
+        file = fixture_file_upload(Rails.root.join("spec", "support", "fixtures", "logo-web.png"), "image/png")
+        prospect = Prospect.create! valid_attributes
+        expect {
+          patch prospect_url(prospect),
+                params: { prospect: { ID_back: file } }, headers: valid_headers
+        }.to change(ActiveStorage::Attachment, :count).by(1)
+      end
+
+      it "attaches the uploaded address proof" do
+        file = fixture_file_upload(Rails.root.join("spec", "support", "fixtures", "logo-web.png"), "image/png")
+        prospect = Prospect.create! valid_attributes
+        expect {
+          patch prospect_url(prospect),
+                params: { prospect: { address_proof: file } }, headers: valid_headers
+        }.to change(ActiveStorage::Attachment, :count).by(1)
+      end
     end
 
     context "with invalid parameters" do
@@ -87,6 +123,16 @@ RSpec.describe "/prospects", type: :request do
         patch prospect_url(prospect),
               params: { prospect: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to match(a_string_including("application/json"))
+      end
+    end
+
+    context "with invalid credentials" do
+      it "renders a JSON response with errors for the prospect" do
+        prospect = Prospect.create! valid_attributes
+        patch prospect_url(prospect),
+              params: { prospect: invalid_attributes }, headers: {}, as: :json
+        expect(response).to have_http_status(:unauthorized)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end

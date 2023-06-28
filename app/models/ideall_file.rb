@@ -4,8 +4,9 @@ class IdeallFile
   attr_accessor :parent_record, :active_storage, :path, :filename, :content_type,
                 :active_storage_file, :forced_position
 
-  def initialize(options)
-    @parent_record = IdeallFile.find_record(options[:parent_class], options[:record_id])
+  def initialize(scope = nil, options)
+    @parent_record = scope
+    @parent_record = IdeallFile.find_record(options[:parent_class], options[:record_id]) if scope.nil?
     @active_storage = IdeallFile.load_active_storage(self.parent_record, options[:parent_attr_file])
     @path = options[:path]
     @filename = options[:filename]
@@ -23,6 +24,8 @@ class IdeallFile
   end
 
   def load_to_record
+    return false if path.nil?
+
     active_storage.attach io: File.open(path), filename: filename, content_type: content_type
     self.active_storage_file, position = get_stored_file
     self.active_storage_file.position = position + 1

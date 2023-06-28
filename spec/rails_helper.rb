@@ -2,6 +2,7 @@
 require 'spec_helper'
 require 'shoulda/matchers'
 require 'devise/jwt/test_helpers'
+require 'active_storage_validations/matchers'
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
@@ -71,4 +72,5 @@ RSpec.configure do |config|
     end
   end
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include ActiveStorageValidations::Matchers
 end

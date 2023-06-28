@@ -62,6 +62,7 @@ es:
         verification_status: "Estatus de verificación"
         verified_at: "Fecha de verificado"
         zip_code: "Código postal"
+        picture: "Foto del prospecto"
     models:
       user: "Usuario"
       mercado_pago_presenter: "Mercado Pago"
@@ -81,6 +82,8 @@ es:
       models:
         prospect:
           attributes:
+            picture:
+              image_not_processable: "no se puede procesar la imagen"
             verification_status:
               invalid_enum: "no puede ser %{value}. Los valores válidos son: %{valid_values}"
   date:

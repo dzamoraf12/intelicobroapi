@@ -34,5 +34,6 @@ module DeviseVue
 
     config.i18n.available_locales = [:es, :en]
     config.i18n.default_locale = :es
+    config.active_storage.variant_processor = :mini_magick
   end
 end
