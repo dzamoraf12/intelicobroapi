@@ -34,6 +34,8 @@ module DeviseVue
 
     config.i18n.available_locales = [:es, :en]
     config.i18n.default_locale = :es
+
+    # Install on server sudo apt install ruby-mini-magick
     config.active_storage.variant_processor = :mini_magick
   end
 end
