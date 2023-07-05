@@ -5,6 +5,10 @@ class ProspectsController < ApplicationController
     render standard_json_response(serializer(filter_list), {}, :ok, [], "")
   end
 
+  def dashboard
+    render standard_json_response(filter_dashboard, {}, :ok, [], "")
+  end
+
   def create
     @prospect = Prospect.create!(prospect_params)
     render standard_json_response(serializer(@prospect), {}, :created, [], "")
@@ -58,5 +62,10 @@ class ProspectsController < ApplicationController
       @prospect.attaching_documents << "ID_front" if prospect_params.key? :ID_front
       @prospect.attaching_documents << "ID_back" if prospect_params.key? :ID_back
       @prospect.attaching_documents << "address_proof" if prospect_params.key? :address_proof
+    end
+
+    def filter_dashboard
+      prospects = Prospect.filter(params)
+      Prospect.dashboard_data(prospects)
     end
 end

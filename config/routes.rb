@@ -11,7 +11,11 @@ Rails.application.routes.draw do
   get "/members/reset_password", to: "member_views#reset_password"
 
   resources :customers, only: [:index, :show]
-  resources :prospects
+  resources :prospects do
+    collection do
+      get :dashboard
+    end
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

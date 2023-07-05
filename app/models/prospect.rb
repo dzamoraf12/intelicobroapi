@@ -39,14 +39,23 @@ class Prospect < ApplicationRecord
     where("verification_status = ?", status)
   end
 
+  scope :by_agent, -> (agent_id) do
+    where("agent_id = ?", agent_id)
+  end
+
   def self.filter(params = {})
     filters = {
       by_verification_agent: params[:agent_id],
       by_name: params[:name],
-      by_verification_status: params[:verification_status]
+      by_verification_status: params[:verification_status],
+      by_agent: params[:only_agent_id]
     }
 
     FilteringService.new(self, filters, { }).filter
+  end
+
+  def self.dashboard_data(prospects)
+    ProspectDashboardService.new(prospects).generate_metrics
   end
 
   def attaching_picture?

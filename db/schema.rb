@@ -22,12 +22,12 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   create_table "abonospagare", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "IDPagare", default: 0
     t.decimal "Importe", precision: 14, scale: 2, default: "0.0"
-    t.datetime "Fecha", default: "1900-01-01 00:00:00"
+    t.datetime "Fecha", precision: 6, default: "1900-01-01 00:00:00"
     t.integer "ConceptoAbono", default: 0, comment: "Capital intereses morosos", unsigned: true
     t.integer "TipoAbono", default: 0, unsigned: true
     t.integer "IDUsuario", default: 0, unsigned: true
     t.boolean "Cancelado", default: false
-    t.datetime "FechaCancelado", default: "1900-01-01 00:00:00"
+    t.datetime "FechaCancelado", precision: 6, default: "1900-01-01 00:00:00"
     t.integer "IDUsuarioCancelado", default: 0, unsigned: true
     t.boolean "Bonificado", default: false, comment: "1=Pago Bonificado"
     t.integer "FolioTicket", default: 0, unsigned: true
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "IDPagoRealizado", unsigned: true
     t.text "Observaciones"
     t.string "TipoPago", limit: 45
-    t.datetime "FechaAplicado", default: "1900-01-01 00:00:00"
+    t.datetime "FechaAplicado", precision: 6, default: "1900-01-01 00:00:00"
     t.string "FolioFactura", limit: 45, default: ""
     t.integer "IDOrigen", default: 0, unsigned: true
     t.integer "FolioMasivo", default: 0, unsigned: true
@@ -86,8 +86,8 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   create_table "agente_promotor", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "IDAgente", default: 0, null: false, unsigned: true
     t.integer "IDPromotor", default: 0, null: false, unsigned: true
-    t.datetime "Fecha", default: "1900-01-01 00:00:00", null: false
-    t.datetime "FechaBaja", default: "1900-01-01 00:00:00", null: false
+    t.datetime "Fecha", precision: 6, default: "1900-01-01 00:00:00", null: false
+    t.datetime "FechaBaja", precision: 6, default: "1900-01-01 00:00:00", null: false
     t.boolean "Activo", default: true
     t.integer "IDUsuario", default: 0, null: false, unsigned: true
     t.integer "IDUsuarioBaja", default: 0, null: false, unsigned: true
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   end
 
   create_table "auxiliar", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.time "Hora"
     t.integer "Movimiento", default: 0
     t.string "Concepto", limit: 200
@@ -254,10 +254,10 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   end
 
   create_table "boveda", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.integer "Folio", default: 0
     t.boolean "Cancelado", default: false
-    t.datetime "FechaMovimiento"
+    t.datetime "FechaMovimiento", precision: 6
     t.boolean "Deposito", default: false
     t.string "Concepto", limit: 80
     t.decimal "Importe", precision: 14, scale: 4, default: "0.0"
@@ -275,7 +275,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.string "ClaveAutorizo", limit: 45
     t.integer "IDUsuarioGenera", unsigned: true
     t.integer "IDUsuarioAutorizo", unsigned: true
-    t.datetime "Fecha", default: "1900-01-01 00:00:00"
+    t.datetime "Fecha", precision: 6, default: "1900-01-01 00:00:00"
     t.integer "Activo", unsigned: true
     t.string "Tipo", limit: 45
   end
@@ -329,7 +329,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "IdTipoIdentificacion", default: 0, unsigned: true
     t.integer "IdActividadEconomica", default: 0, unsigned: true
     t.string "MoralRazonSocial", limit: 60
-    t.datetime "MoralFechaAlta", default: "1900-01-01 00:00:00"
+    t.datetime "MoralFechaAlta", precision: 6, default: "1900-01-01 00:00:00"
     t.string "MoralRFC", limit: 13
     t.integer "MoralIdGiroMercantil", default: 0, unsigned: true
     t.integer "MoralIdPaisNacionalidad", default: 0, unsigned: true
@@ -361,12 +361,12 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
 
   create_table "comentarios", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.text "Comentario", null: false
-    t.datetime "Fecha", null: false
+    t.datetime "Fecha", precision: 6, null: false
     t.integer "IDUsuario", null: false, unsigned: true
     t.integer "IDRegistro", null: false, unsigned: true
     t.string "Tabla", limit: 85, null: false
     t.string "Status", limit: 15, default: "Activo"
-    t.datetime "FechaBaja"
+    t.datetime "FechaBaja", precision: 6
     t.integer "IDUsuarioBaja", default: 0, unsigned: true
   end
 
@@ -412,14 +412,14 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "IDSolicitud", null: false, unsigned: true
     t.integer "IDPagare", null: false, unsigned: true
     t.date "FechaAcuerdo", null: false
-    t.datetime "Created_at", null: false
+    t.datetime "Created_at", precision: 6, null: false
     t.integer "IDUsuario", null: false, unsigned: true
     t.string "Status", limit: 45, null: false
     t.integer "Folio", null: false, unsigned: true
   end
 
   create_table "cortecaja", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.integer "Folio", default: 0, unsigned: true
     t.string "Caja", limit: 50
     t.integer "IDUsuario", unsigned: true
@@ -451,7 +451,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
 
   create_table "cuentasgastos", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Cuenta", limit: 12, default: "511101"
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.string "Descripcion", limit: 45
   end
 
@@ -476,7 +476,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.string "NombresGarante", limit: 60
     t.string "PaternoGrarante", limit: 60
     t.string "MaternoGarante", limit: 60
-    t.datetime "FechaNacimientoGarante", default: "1900-01-01 01:01:01"
+    t.datetime "FechaNacimientoGarante", precision: 6, default: "1900-01-01 01:01:01"
     t.string "RfcGarante", limit: 15
     t.string "CurpGarante", limit: 25
     t.string "RazonSocialGarante", limit: 60
@@ -514,7 +514,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
 
   create_table "diagnosticosocioeconomico", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.integer "IDCliente"
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.string "Verificador", limit: 60
     t.boolean "InformacionCorrecta"
     t.text "Comentarios", size: :tiny
@@ -569,7 +569,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
 
   create_table "estudioeconomico", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.integer "IDCliente"
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.string "Verificador", limit: 60
     t.text "DescripcionNegocio", size: :tiny
     t.text "DescripcionProyecto", size: :tiny
@@ -583,7 +583,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.string "Descripcion", limit: 75, null: false
     t.integer "Orden", null: false, unsigned: true
     t.integer "IDCliente", null: false, unsigned: true
-    t.datetime "Fecha", null: false
+    t.datetime "Fecha", precision: 6, null: false
     t.integer "IDUsuario", null: false, unsigned: true
     t.integer "Activo", default: 1, null: false, unsigned: true
   end
@@ -607,7 +607,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   create_table "facturas", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Serie", limit: 10
     t.string "Folio", limit: 10
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.integer "IDCliente", default: 0
     t.float "Subtotal", limit: 53, default: 0.0
     t.float "ImporteIva", limit: 53, default: 0.0
@@ -649,7 +649,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   create_table "gastos", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.integer "IDGasto"
     t.integer "Folio"
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.string "Concepto", limit: 60
     t.decimal "Importe", precision: 14, scale: 4, default: "0.0"
     t.integer "IDUsuario", default: 0
@@ -705,7 +705,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
 
   create_table "informacioneconomica", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.integer "IDCliente"
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.string "Verificador", limit: 80
     t.integer "IDUsuario"
     t.decimal "CantidadAspirar", precision: 10, scale: 2, default: "0.0"
@@ -799,7 +799,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "IDCliente", default: 0
     t.integer "IDSolicitud", default: 0
     t.bigint "Folio"
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.string "Referencia", limit: 100
     t.string "Descripcion"
     t.decimal "Cargo", precision: 12, scale: 4, default: "0.0"
@@ -810,7 +810,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "IDUsuarioCancelado", default: 0
     t.string "PC", limit: 20
     t.boolean "Parcial", default: false, unsigned: true
-    t.datetime "FechaAplicado", default: "1900-01-01 00:00:00"
+    t.datetime "FechaAplicado", precision: 6, default: "1900-01-01 00:00:00"
     t.text "Observaciones"
     t.index ["IDCliente"], name: "fk_Movimientos_Clientes"
     t.index ["IDUsuario"], name: "fk_Movimientos_Usuarios"
@@ -818,10 +818,10 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   end
 
   create_table "movimientosbancos", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.integer "Folio"
     t.boolean "Cancelado"
-    t.datetime "FechaMovimiento"
+    t.datetime "FechaMovimiento", precision: 6
     t.boolean "Deposito"
     t.string "Concepto", limit: 80
     t.decimal "Cargo", precision: 14, scale: 4, default: "0.0"
@@ -856,7 +856,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   end
 
   create_table "otrosmovimientos", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.integer "Folio", default: 0
     t.integer "IDBanco", default: 0
     t.integer "IDConcepto", default: 0
@@ -880,17 +880,17 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.boolean "Cancelado", default: false
     t.boolean "Vencido", default: false
     t.boolean "Pagado", default: false
-    t.datetime "FechaPago"
+    t.datetime "FechaPago", precision: 6
     t.integer "IDUsuario", default: 0
     t.decimal "AmortizacionInt", precision: 14, scale: 4, default: "0.0"
     t.decimal "AmortizacionParcial", precision: 14, scale: 4, default: "0.0"
     t.decimal "AmortizacionIntParcial", precision: 14, scale: 4, default: "0.0"
-    t.datetime "FechaParcial"
+    t.datetime "FechaParcial", precision: 6
     t.boolean "Parcial", default: false, unsigned: true
     t.decimal "PagoIntMoratorios", precision: 14, scale: 4, default: "0.0"
     t.decimal "PagoIvaMoratorios", precision: 14, scale: 4, default: "0.0"
-    t.datetime "FechaPagoMoroso"
-    t.datetime "VencimientoOriginal", default: "1900-01-01 01:01:01"
+    t.datetime "FechaPagoMoroso", precision: 6
+    t.datetime "VencimientoOriginal", precision: 6, default: "1900-01-01 01:01:01"
     t.integer "Convenio", default: 0, unsigned: true
     t.text "Observaciones"
     t.integer "IDPagareRelacion", default: 0, unsigned: true
@@ -908,7 +908,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "FolioTicket", null: false, unsigned: true
     t.decimal "PorcentajeComision", precision: 12, scale: 2, null: false
     t.decimal "ImporteComision", precision: 12, scale: 2, null: false
-    t.datetime "FechaPago", null: false
+    t.datetime "FechaPago", precision: 6, null: false
     t.integer "IDAgente", null: false, unsigned: true
     t.integer "Cancelado", default: 0, unsigned: true
     t.text "Observaciones"
@@ -928,7 +928,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
   end
 
   create_table "productosgastosfinancieros", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.datetime "Fecha"
+    t.datetime "Fecha", precision: 6
     t.integer "Folio"
     t.integer "IDBanco"
     t.integer "IDUsuario"
@@ -978,7 +978,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "IDCliente", default: 0, unsigned: true
     t.integer "IDUsuario", default: 0, unsigned: true
     t.integer "TipoReferencia", unsigned: true
-    t.datetime "Registrado", default: "1900-01-01 00:00:00"
+    t.datetime "Registrado", precision: 6, default: "1900-01-01 00:00:00"
     t.text "Domicilio"
     t.text "Comentarios"
   end
@@ -994,27 +994,27 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.integer "TipoCredito", default: 0
     t.bigint "Folio", default: 0
     t.string "sFolio", limit: 30
-    t.datetime "Fecha", default: "1900-01-01 00:00:00"
+    t.datetime "Fecha", precision: 6, default: "1900-01-01 00:00:00"
     t.decimal "Credito", precision: 14, scale: 4, default: "0.0"
     t.integer "Plazo", default: 0
     t.float "Tasa", default: 0.0
     t.decimal "Pago", precision: 14, scale: 4, default: "0.0"
     t.boolean "IVA", default: false
-    t.datetime "FechaContrato", default: "1900-01-01 00:00:00"
+    t.datetime "FechaContrato", precision: 6, default: "1900-01-01 00:00:00"
     t.string "Autorizo", limit: 80, default: "0"
     t.integer "FolioContrato", default: 0
     t.boolean "Autorizado", default: false
     t.boolean "Cancelado", default: false
     t.boolean "Liquidado", default: false
-    t.datetime "FechaVencimiento", default: "1900-01-01 00:00:00"
+    t.datetime "FechaVencimiento", precision: 6, default: "1900-01-01 00:00:00"
     t.integer "Status", default: 0
     t.decimal "SaldoInsoluto", precision: 14, scale: 4, default: "0.0"
     t.boolean "Rechazado", default: false
     t.string "ComentarioRechazado"
-    t.datetime "FechaRechazado"
+    t.datetime "FechaRechazado", precision: 6
     t.integer "Origen", default: 0
     t.boolean "Restructurado", default: false
-    t.datetime "FechaRestructuracion"
+    t.datetime "FechaRestructuracion", precision: 6
     t.decimal "MontoRestructurar", precision: 14, scale: 4, default: "0.0"
     t.integer "IDPlazo", default: 0, null: false, unsigned: true
     t.boolean "Garantia", default: false
@@ -1024,14 +1024,14 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.string "FolioTrasferencia", limit: 45
     t.string "FolioCheque", limit: 30
     t.string "NumeroCuenta", limit: 45
-    t.datetime "FechaEntregaPrestamo", default: "1900-01-01 01:01:01"
+    t.datetime "FechaEntregaPrestamo", precision: 6, default: "1900-01-01 01:01:01"
     t.integer "PeriodoPago", default: 0, comment: "54=Semanal, 24 Quincenal, 12 Mensual 6 Bimestral 2 Semestral 1 Anual", unsigned: true
     t.decimal "CAT", precision: 12, scale: 2, default: "0.0"
     t.decimal "PorcentajeIVA", precision: 12, scale: 2, default: "0.0"
     t.decimal "ComisionApertura", precision: 12, scale: 2, default: "0.0", comment: "Importe de comision por apertura"
     t.decimal "PorcentajeMora", precision: 12, scale: 2, default: "0.0"
     t.decimal "TotalCreditoOtorgado", precision: 12, scale: 2, default: "0.0"
-    t.datetime "FechaPrimerPago", default: "1900-01-01 01:01:01"
+    t.datetime "FechaPrimerPago", precision: 6, default: "1900-01-01 01:01:01"
     t.decimal "PorceAnualDeMoraDiaria", precision: 12, scale: 2, default: "0.0"
     t.decimal "PagoSinIVA", precision: 12, scale: 2, default: "0.0"
     t.integer "ConSaldoInsoluto", default: 1, unsigned: true

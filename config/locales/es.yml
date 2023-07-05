@@ -437,3 +437,10 @@ es:
     transferencia: Transferencia
     tarjeta_credito: Tarjeta Credito
     tarjeta_debito: Tarjeta Debito
+  app:
+    prospects:
+      dashboard_metrics:
+        pending: "Prospectos por verificar"
+        verified: "Prospectos verificados"
+        accepted: "Prospectos aceptados"
+        rejected: "Prospectos rechazados"
