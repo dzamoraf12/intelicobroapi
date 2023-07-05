@@ -77,6 +77,18 @@ RSpec.describe Prospect, type: :model do
     end
   end
 
+  describe "callbacks" do
+    it "before update changes status to verified" do
+      pending_prospect = create(:prospect, :with_valid_documents)
+      expect(pending_prospect.verification_status).to eq("pending")
+
+      pending_prospect.update_attribute(:city, "Obregón")
+      pending_prospect.reload
+      expect(pending_prospect.verification_status).to eq("verified")
+      expect(pending_prospect.verified_at).to be_present
+    end
+  end
+
   describe "attach documents" do
     context "with valid documents" do
       let!(:prospect_with_valid_documents) { create(:prospect, :with_valid_documents) }

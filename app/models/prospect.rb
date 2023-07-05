@@ -25,6 +25,8 @@ class Prospect < ApplicationRecord
   validates :address_proof, attached: true, processable_image: true,
                             content_type: ["image/png", "image/jpeg"], size: { between: 1.kilobyte..8.megabytes },
                             if: :attaching_address_proof?
+  
+  before_update :change_status_to_verified, if: :has_complete_data?
 
   scope :by_verification_agent, -> (agent_id) do
     where("agent_id = ? AND verification_status IN (?)", agent_id, [0, 1, 3])
@@ -96,5 +98,23 @@ class Prospect < ApplicationRecord
     if self.address_proof.attached?
       rails_blob_url(self.address_proof)
     end
+  end
+
+  def change_status_to_verified
+    self.verification_status = "verified"
+    self.verified_at = Time.now
+  end
+
+  private
+  
+  def has_complete_data?
+    self.pending? && self.documents_attached? && self.names.present? && self.father_surname.present? &&
+    self.street.present? && self.external_number.present? && self.zip_code.present? && self.state.present? &&
+    self.neighborhood.present? && self.municipality.present? && self.city.present? && self.latitude.present? &&
+    self.longitude.present?
+  end
+
+  def documents_attached?
+    self.picture.attached? && self.ID_front.attached? && self.ID_back.attached? && self.address_proof.attached?
   end
 end
