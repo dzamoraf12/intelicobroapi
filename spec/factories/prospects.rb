@@ -34,39 +34,24 @@ FactoryBot.define do
     end
 
     trait :with_picture do
-      after :build do |prospect|
-        file_name = "logo-web.png"
-        file_path = Rails.root.join("spec", "support", "fixtures", file_name)
-        prospect.attaching_documents << "picture"
-        prospect.picture.attach(io: File.open(file_path), filename: file_name, content_type: "image/png")
-      end
+      file_path = Rails.root.join("spec", "support", "fixtures", "logo-web.png")
+      picture { Rack::Test::UploadedFile.new(file_path, "image/png") }
+      
     end
 
     trait :with_ID_front do
-      after :build do |prospect|
-        file_name = "logo-web.png"
-        file_path = Rails.root.join("spec", "support", "fixtures", file_name)
-        prospect.attaching_documents << "ID_front"
-        prospect.ID_front.attach(io: File.open(file_path), filename: file_name, content_type: "image/png")
-      end
+      file_path = Rails.root.join("spec", "support", "fixtures", "logo-web.png")
+      ID_front { Rack::Test::UploadedFile.new(file_path, "image/png") }
     end
 
     trait :with_ID_back do
-      after :build do |prospect|
-        file_name = "logo-web.png"
-        file_path = Rails.root.join("spec", "support", "fixtures", file_name)
-        prospect.attaching_documents << "ID_back"
-        prospect.ID_back.attach(io: File.open(file_path), filename: file_name, content_type: "image/png")
-      end
+      file_path = Rails.root.join("spec", "support", "fixtures", "logo-web.png")
+      ID_back { Rack::Test::UploadedFile.new(file_path, "image/png") }
     end
 
     trait :with_address_proof do
-      after :build do |prospect|
-        file_name = "logo-web.png"
-        file_path = Rails.root.join("spec", "support", "fixtures", file_name)
-        prospect.attaching_documents << "address_proof"
-        prospect.address_proof.attach(io: File.open(file_path), filename: file_name, content_type: "image/png")
-      end
+      file_path = Rails.root.join("spec", "support", "fixtures", "logo-web.png")
+      address_proof { Rack::Test::UploadedFile.new(file_path, "image/png") }
     end
   end
 end

@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "Customers", type: :request do
   let(:user) { create(:user) }
-  let(:token) { get_token(user) }
   let(:valid_headers) { Devise::JWT::TestHelpers.auth_headers({}, user) }
   let(:valid_attributes) { attributes_for(:customer) }
 

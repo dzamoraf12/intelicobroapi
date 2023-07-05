@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "/prospects", type: :request do
   let(:user) { create(:user) }
-  let(:token) { get_token(user) }
   let(:valid_headers) { Devise::JWT::TestHelpers.auth_headers({}, user) }
   let(:valid_attributes) { attributes_for(:prospect) }
   let(:invalid_attributes) { attributes_for(:prospect, :with_invalid_data) }
@@ -12,6 +11,54 @@ RSpec.describe "/prospects", type: :request do
       Prospect.create! valid_attributes
       get prospects_url, headers: valid_headers, as: :json
       expect(response).to be_successful
+    end
+  end
+
+  describe "GET #dashboard" do
+    let!(:agent1) { create(:agent) }
+    let!(:agent2) { create(:agent) }
+    let!(:prospects_to_verify_a1) { create_list(:prospect, 2, agent: agent1, verification_status: "pending") }
+    let!(:verified_prospects_a1) { create_list(:prospect, 3, agent: agent1, verification_status: "verified") }
+    let!(:accepted_prospects_a1) { create_list(:prospect, 1, agent: agent1, verification_status: "accepted") }
+    let!(:rejected_prospects_a1) { create_list(:prospect, 1, agent: agent1, verification_status: "rejected") }
+    let!(:prospects_to_verify_a2) { create_list(:prospect, 1, agent: agent2, verification_status: "pending") }
+    let!(:verified_prospects_a2) { create_list(:prospect, 2, agent: agent2, verification_status: "verified") }
+    let!(:accepted_prospects_a2) { create_list(:prospect, 3, agent: agent2, verification_status: "accepted") }
+    let!(:rejected_prospects_a2) { create_list(:prospect, 0, agent: agent2, verification_status: "rejected") }
+    let!(:mock_dashboard_response_by_agent2) {
+      [
+        { "text": "Prospectos por verificar", "value": 1, "redirect_to": "appPage" }.with_indifferent_access,
+        { "text": "Prospectos verificados", "value": 2, "redirect_to": "appPage" }.with_indifferent_access,
+        { "text": "Prospectos aceptados", "value": 3, "redirect_to": "appPage" }.with_indifferent_access,
+        { "text": "Prospectos rechazados", "value": 0, "redirect_to": "appPage" }.with_indifferent_access
+      ]
+    }
+    let!(:mock_dashboard_response_all_agents) {
+      [
+        { "text": "Prospectos por verificar", "value": 3, "redirect_to": "appPage" }.with_indifferent_access,
+        { "text": "Prospectos verificados", "value": 5, "redirect_to": "appPage" }.with_indifferent_access,
+        { "text": "Prospectos aceptados", "value": 4, "redirect_to": "appPage" }.with_indifferent_access,
+        { "text": "Prospectos rechazados", "value": 1, "redirect_to": "appPage" }.with_indifferent_access
+      ]
+    }
+
+    it "returns a successful response by agent" do
+      get dashboard_prospects_path,
+          headers: valid_headers,
+          params: { only_agent_id: agent2.id }
+      expect(response).to have_http_status(:success)
+
+      response_data = JSON.parse(response.body)["data"]
+      expect(response_data).to eq(mock_dashboard_response_by_agent2)
+    end
+
+    it "returns a successful response all agents" do
+      get dashboard_prospects_path,
+          headers: valid_headers
+      expect(response).to have_http_status(:success)
+
+      response_data = JSON.parse(response.body)["data"]
+      expect(response_data).to eq(mock_dashboard_response_all_agents)
     end
   end
 
