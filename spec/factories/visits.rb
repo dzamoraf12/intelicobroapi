@@ -4,6 +4,7 @@ FactoryBot.define do
     comments { "Cliente no se encuentra en su domicilio" }
     latitude { Faker::Address.latitude }
     longitude { Faker::Address.longitude }
+    status { "pending" }
     customer_id { create(:customer).id }
     user_id { create(:user).id }
 

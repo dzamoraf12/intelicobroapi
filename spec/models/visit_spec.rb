@@ -13,6 +13,11 @@ RSpec.describe Visit, type: :model do
     it { should allow_value("").for(:longitude) }
     it { should_not allow_value("InvalidLat").for(:latitude) }
     it { should_not allow_value("InvalidLong").for(:longitude) }
+    it {
+      should define_enum_for(:status).with_values({
+        pending: 0, paid: 1
+      })
+    }
   end
 
   describe "associations" do
