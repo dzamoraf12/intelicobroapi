@@ -1,6 +1,8 @@
 class Customer < ApplicationRecord
   self.table_name = "clientes"
+  self.primary_key = "ID"
 
+  alias_attribute :id, :ID
   alias_attribute :customer_number, :NumeroCliente
   alias_attribute :name, :Nombre
   alias_attribute :paternal_name, :ApellidoPaterno

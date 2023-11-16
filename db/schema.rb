@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_25_004827) do
+ActiveRecord::Schema.define(version: 2023_11_15_014115) do
 
   create_table "abonos_promesas", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "NoPago", limit: 45
@@ -280,7 +280,7 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.string "Tipo", limit: 45
   end
 
-  create_table "clientes", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "clientes", primary_key: "ID", id: :integer, default: nil, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "NumeroCliente", limit: 10, null: false
     t.string "NumeroCuenta", limit: 10
     t.string "ApellidoPaterno", limit: 80
@@ -1125,6 +1125,22 @@ ActiveRecord::Schema.define(version: 2023_06_25_004827) do
     t.index ["Usuario"], name: "fk_Usuarios_OtrosMovimientos1"
   end
 
+  create_table "visits", charset: "latin1", force: :cascade do |t|
+    t.decimal "penalty_amount", precision: 12, scale: 2
+    t.text "comments"
+    t.string "latitude"
+    t.string "longitude"
+    t.integer "customer_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "deleted_at", precision: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_visits_on_customer_id"
+    t.index ["deleted_at"], name: "index_visits_on_deleted_at"
+    t.index ["user_id"], name: "index_visits_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "visits", "users"
 end
