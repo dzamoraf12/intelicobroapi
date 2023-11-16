@@ -44,13 +44,14 @@ class VisitsController < ApplicationController
     end
 
     def visit_update_params
-      params.require(:visit).permit(:penalty_amount)
+      params.require(:visit).permit(:penalty_amount, :status)
     end
 
     def filter_list
       filters = {
         customer_id: params[:customer_id],
-        user_id: params[:user_id]
+        user_id: params[:user_id],
+        status: params[:status]
       }
       paginate Visit.filter(filters), per_page: per_page_params
     end

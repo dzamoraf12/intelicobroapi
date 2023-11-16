@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_15_014115) do
+ActiveRecord::Schema.define(version: 2023_11_16_232257) do
 
   create_table "abonos_promesas", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "NoPago", limit: 45
@@ -1130,6 +1130,7 @@ ActiveRecord::Schema.define(version: 2023_11_15_014115) do
     t.text "comments"
     t.string "latitude"
     t.string "longitude"
+    t.integer "status", default: 0
     t.integer "customer_id", null: false
     t.bigint "user_id", null: false
     t.datetime "deleted_at", precision: 6
