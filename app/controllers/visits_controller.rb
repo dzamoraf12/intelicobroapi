@@ -55,6 +55,12 @@ class VisitsController < ApplicationController
       bucket_name = ENV["AWS_ACCESS_BUCKET"]
       obj = s3.bucket(bucket_name).object(track[:file_key])
 
+      # Get the content type (MIME type) of the object from S3
+      content_type = obj.content_type
+
+      # Set the Content-Type header based on the MIME type fetched from S3
+      response.headers['Content-Type'] = content_type
+
       # Set the content length for the current track
       response.headers['Content-Length'] = obj.content_length
 
@@ -102,6 +108,12 @@ class VisitsController < ApplicationController
       [
         {
           file_key: "medios/Music/ACDC-Back In Black.mp3"
+        },
+        {
+          file_key: "medios/Music/ACDC-Highway to Hell.mp3"
+        },
+        {
+          file_key: "medios/Music/ACDC-Play Ball.mp3"
         }
       ]
     end
