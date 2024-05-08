@@ -1,5 +1,8 @@
 class VisitsController < ApplicationController
+  include ActionController::Live
+
   before_action :set_visit, only: %i[ show update destroy ]
+  skip_before_action :authenticate_user!, only: [:stream]
 
   # GET /visits
   def index
@@ -27,6 +30,41 @@ class VisitsController < ApplicationController
   def destroy
     @visit.destroy
     render standard_json_response({}, {}, :no_content, [], "")
+  end
+
+  def stream
+    tracks = get_tracks
+
+    # Set response headers for streaming
+    response.headers['Content-Type'] = 'audio/mpeg'
+    response.headers['Accept-Ranges'] = 'bytes'
+
+    # Specify AWS credentials
+    credentials = Aws::Credentials.new(ENV["AWS_ACCESS_KEY_ID"], ENV["AWS_SECRET_ACCESS_KEY"])
+
+    # Specify AWS region
+    region = ENV["AWS_ACCESS_REGION"]
+
+    # Stream each track sequentially
+    tracks.each do |track|
+      s3 = Aws::S3::Resource.new(
+        region: region,
+        credentials: credentials
+      )
+      
+      bucket_name = ENV["AWS_ACCESS_BUCKET"]
+      obj = s3.bucket(bucket_name).object(track[:file_key])
+
+      # Set the content length for the current track
+      response.headers['Content-Length'] = obj.content_length
+
+      # Stream the current track from S3
+      obj.get(response_target: Proc.new { |chunk| response.stream.write(chunk) })
+
+    # Ensure the stream for the current track is closed properly
+    ensure
+      response.stream.close
+    end
   end
 
   private
@@ -58,5 +96,13 @@ class VisitsController < ApplicationController
 
     def serializer(resources, view: nil)
       VisitSerializer.render_as_hash(resources, view: view)
+    end
+
+    def get_tracks
+      [
+        {
+          file_key: "medios/Music/ACDC-Back In Black.mp3"
+        }
+      ]
     end
 end
