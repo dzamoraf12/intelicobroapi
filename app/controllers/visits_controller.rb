@@ -34,22 +34,88 @@ class VisitsController < ApplicationController
 
   def stream
     tracks = get_user_playlist
-
+  
     # Set response headers for streaming
     response.headers['Content-Type'] = 'audio/mpeg'
     response.headers['Accept-Ranges'] = 'bytes'
-
+  
     # Specify AWS credentials
     credentials = Aws::Credentials.new(ENV["AWS_ACCESS_KEY_ID"], ENV["AWS_SECRET_ACCESS_KEY"])
-
+  
     # Specify AWS region
     region = ENV["AWS_ACCESS_REGION"]
-
+  
     # Stream the first track
     stream_track(tracks, 0, credentials, region)
+  ensure
+    # Ensure the response stream is closed
+    response.stream.close
   end
-
+  
   private
+
+  def stream_track(tracks, index, credentials, region)
+    return if index >= tracks.length
+  
+    track = tracks[index]
+    s3 = Aws::S3::Resource.new(
+      region: region,
+      credentials: credentials
+    )
+  
+    bucket_name = ENV["AWS_ACCESS_BUCKET"]
+    obj = s3.bucket(bucket_name).object(track[:file_key])
+    puts "Streaming the song #{track[:file_key]}"
+  
+    # Set the content length for the current track
+    #response.headers['Content-Length'] = obj.content_length
+  
+    # Get the content type (MIME type) of the object from S3
+    # content_type = obj.content_type
+  
+    # Set the Content-Type header based on the MIME type fetched from S3
+    # response.headers['Content-Type'] = content_type
+  
+    # Stream the current track from S3 using the read method
+    obj.get(response_target: response) do |chunk|
+      response.stream.write(chunk)
+    end
+  
+    # After streaming this track, recursively stream the next track
+    stream_track(tracks, index + 1, credentials, region)
+  end
+  
+  # def stream_track(tracks, index, credentials, region)
+  #   puts "NOTHING TO STREAM" if index >= tracks.length
+  #   return if index >= tracks.length
+  
+  #   track = tracks[index]
+  #   s3 = Aws::S3::Resource.new(
+  #     region: region,
+  #     credentials: credentials
+  #   )
+  
+  #   bucket_name = ENV["AWS_ACCESS_BUCKET"]
+  #   obj = s3.bucket(bucket_name).object(track[:file_key])
+  #   puts "Streaming the song #{track[:file_key]}"
+  
+  #   # Get the content type (MIME type) of the object from S3
+  #   content_type = obj.content_type
+  
+  #   # Set the Content-Type header based on the MIME type fetched from S3
+  #   response.headers['Content-Type'] = content_type
+  
+  #   # Set the content length for the current track
+  #   response.headers['Content-Length'] = obj.content_length
+  
+  #   # Stream the current track from S3
+  #   obj.get(response_target: Proc.new { |chunk| response.stream.write(chunk) }) do |response|
+  #     # After streaming this track, recursively stream the next track
+  #     response.stream.on_close do
+  #       stream_track(tracks, index + 1, credentials, region)
+  #     end
+  #   end
+  # end
 
   def get_user_playlist
     [
@@ -63,37 +129,6 @@ class VisitsController < ApplicationController
         file_key: "medios/Music/ACDC-Play Ball.mp3"
       }
     ]
-  end
-
-  def stream_track(tracks, index, credentials, region)
-    return if index >= tracks.length
-  
-    track = tracks[index]
-    s3 = Aws::S3::Resource.new(
-      region: region,
-      credentials: credentials
-    )
-  
-    bucket_name = ENV["AWS_ACCESS_BUCKET"]
-    obj = s3.bucket(bucket_name).object(track[:file_key])
-    puts "Steaming the song #{track[:file_key]}"
-  
-    # Get the content type (MIME type) of the object from S3
-    content_type = obj.content_type
-  
-    # Set the Content-Type header based on the MIME type fetched from S3
-    response.headers['Content-Type'] = content_type
-  
-    # Set the content length for the current track
-    response.headers['Content-Length'] = obj.content_length
-  
-    # Stream the current track from S3
-    obj.get(response_target: Proc.new { |chunk| response.stream.write(chunk) }) do |response|
-      # After streaming this track, recursively stream the next track
-      response.stream.on_close do
-        stream_track(tracks, index + 1, credentials, region)
-      end
-    end
   end
 
   # def stream
