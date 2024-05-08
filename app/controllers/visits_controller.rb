@@ -65,7 +65,7 @@ class VisitsController < ApplicationController
   
     bucket_name = ENV["AWS_ACCESS_BUCKET"]
     obj = s3.bucket(bucket_name).object(track[:file_key])
-    puts "Streaming the song #{track[:file_key]}"
+    Rails.logger.info "Streaming the song #{track[:file_key]}"
   
     # Set the content length for the current track
     #response.headers['Content-Length'] = obj.content_length
@@ -78,6 +78,7 @@ class VisitsController < ApplicationController
   
     # Stream the current track from S3 using the read method
     obj.get(response_target: response) do |chunk|
+      Rails.logger.info "Streaming chunk..."
       response.stream.write(chunk)
     end
   
