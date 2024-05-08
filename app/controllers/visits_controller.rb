@@ -47,6 +47,9 @@ class VisitsController < ApplicationController
   
     # Stream the first track
     stream_track(tracks, 0, credentials, region)
+
+    # Log data transfer
+    Rails.logger.info("Data transferred: #{response.body.bytesize} bytes")
   ensure
     # Ensure the response stream is closed
     response.stream.close
