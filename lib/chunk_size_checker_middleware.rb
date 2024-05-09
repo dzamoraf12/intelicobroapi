@@ -25,7 +25,7 @@ class ChunkSizeCheckerMiddleware
         chunk_size = chunk.bytesize
         
         # Log the size of each chunk
-        Rails.logger.info "Chunk size: #{chunk_size} bytes"
+        # Rails.logger.info "Chunk size: #{chunk_size} bytes"
         
         # Increment the total chunk size
         @total_chunk_size += chunk_size
