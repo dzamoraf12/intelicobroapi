@@ -6,6 +6,8 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require_relative '../lib/chunk_size_checker_middleware'
+
 module DeviseVue
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -37,5 +39,8 @@ module DeviseVue
 
     # Install on server sudo apt install ruby-mini-magick
     config.active_storage.variant_processor = :mini_magick
+
+    # Use the ChunkSizeCheckerMiddleware
+    config.middleware.use ChunkSizeCheckerMiddleware
   end
 end

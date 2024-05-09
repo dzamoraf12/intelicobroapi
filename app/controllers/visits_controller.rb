@@ -47,9 +47,6 @@ class VisitsController < ApplicationController
   
     # Stream the first track
     stream_track(tracks, 0, credentials, region)
-
-    # Log data transfer
-    Rails.logger.info("Data transferred: #{response.body.bytesize} bytes")
   ensure
     # Ensure the response stream is closed
     response.stream.close
@@ -81,7 +78,6 @@ class VisitsController < ApplicationController
   
     # Stream the current track from S3 using the read method
     obj.get(response_target: response) do |chunk|
-      Rails.logger.info "Streaming chunk..."
       response.stream.write(chunk)
     end
   
