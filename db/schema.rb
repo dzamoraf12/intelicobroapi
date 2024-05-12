@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_16_232257) do
+ActiveRecord::Schema.define(version: 2024_05_12_034201) do
 
   create_table "abonos_promesas", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.string "NoPago", limit: 45
@@ -1094,6 +1094,14 @@ ActiveRecord::Schema.define(version: 2023_11_16_232257) do
     t.string "Domingo", limit: 12
     t.integer "Plazo", unsigned: true
     t.decimal "Mes", precision: 12, scale: 2, default: "0.0"
+  end
+
+  create_table "tracks", charset: "latin1", force: :cascade do |t|
+    t.string "path"
+    t.string "name"
+    t.integer "plays"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", charset: "latin1", force: :cascade do |t|

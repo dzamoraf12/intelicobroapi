@@ -53,34 +53,39 @@ class VisitsController < ApplicationController
   # end
 
   def stream
-    tracks = get_user_playlist
-    index = params[:index].to_i
+    track = get_current_track
+
+    return if track.plays > ENV["PLAYS_LIMIT"].to_i 
+    # index = params[:index].to_i
     credentials = Aws::Credentials.new(ENV["AWS_ACCESS_KEY_ID"], ENV["AWS_SECRET_ACCESS_KEY"])
     region = ENV["AWS_ACCESS_REGION"]
   
     # Ensure index is within bounds
-    return unless index.between?(0, tracks.length - 1)
+    # return unless index.between?(0, track.length - 1)
   
-    track = tracks[index]
+    # track = tracks[index]
     s3 = Aws::S3::Resource.new(region: region, credentials: credentials)
     bucket_name = ENV["AWS_ACCESS_BUCKET"]
-    obj = s3.bucket(bucket_name).object(track[:file_key])
+    obj = s3.bucket(bucket_name).object(track.file_key)
   
     # Set response headers for streaming
     response.headers['Content-Type'] = 'audio/mpeg'
     response.headers['Accept-Ranges'] = 'bytes'
   
     # Trigger streaming of the next track if there is one
-    next_index = index + 1
-    if next_index < tracks.length
-      next_track_url = "/tracks/stream?index=#{next_index}"
-      response.headers['X-Next-Track-Url'] = next_track_url
-    end
+    # next_index = index + 1
+    # if next_index < tracks.length
+    #   next_track_url = "/tracks/stream?index=#{next_index}"
+    #   response.headers['X-Next-Track-Url'] = next_track_url
+    # end
   
     # Stream the current track from S3
     obj.get(response_target: response) do |chunk|
       response.stream.write(chunk)
     end
+
+    track.plays += 1
+    track.save
   
   ensure
     # Ensure the response stream is closed
@@ -167,18 +172,8 @@ class VisitsController < ApplicationController
   #   end
   # end
 
-  def get_user_playlist
-    [
-      {
-        file_key: "medios/Music/ACDC-Back In Black.mp3"
-      },
-      {
-        file_key: "medios/Music/ACDC-Highway to Hell.mp3"
-      },
-      {
-        file_key: "medios/Music/ACDC-Play Ball.mp3"
-      }
-    ]
+  def get_current_track
+    Track.order(:plays).first
   end
 
   # def stream
